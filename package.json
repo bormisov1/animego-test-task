@@ -107,7 +107,7 @@
   },
   "scripts": {
     "start": "node ./dist/app.js",
-    "dev": "ts-node-dev -r tsconfig-paths/register --exit-child ./src/app.ts",
+    "dev": "ts-node-dev -r tsconfig-paths/register --exit-child src/main.ts",
     "build": "tsc && tsc-alias",
     "generate": "prisma generate",
     "seed": "ts-node prisma/seeds/index.ts",
