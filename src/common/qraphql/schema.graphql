@@ -1,0 +1,48 @@
+type Query {
+  tasks: [Task]
+  task(id: ID!): Task
+  tasksByStatus(status: Status!): [Task]
+}
+
+type Mutation {
+  createTask(createTaskInput: CreateTaskInput): Task
+  updateTask(updateTaskInput: UpdateTaskInput): Task
+  deleteTask(deleteTaskInput: DeleteTaskInput): ID
+}
+
+type Task {
+    id:          Int
+    name:        String
+    description: String
+    expires:     String
+    isCompleted: Boolean
+    status:      Status
+    createdAt:   String
+    updatedAt:   String
+}
+
+
+enum Status {
+  COMPLETE
+  IN_WORK
+  AWAITING
+}
+
+input CreateTaskInput {
+    name:        String
+    description: String
+    expires:     String
+}
+
+input UpdateTaskInput {
+    id:          Int
+    name:        String
+    description: String
+    expires:     String
+    isCompleted: Boolean
+    status:      Status
+}
+
+input DeleteTaskInput {
+    id:          Int
+}

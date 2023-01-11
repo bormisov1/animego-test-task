@@ -1,9 +1,11 @@
 import { Injectable } from "@nestjs/common";
-import { Task } from "task/models/task/task.model";
+import { Task } from "./models/task/task.model";
 
 @Injectable()
 export class TaskService {
-  getHello(): Task {
+
+  async get(): Promise<Task> {
     return {} as Task;
   }
+
 }
