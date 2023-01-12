@@ -4,3 +4,4 @@ node_modules
 # git rm -r --cached .idea - Удалить из кэша
 # иначе будешь выгружать для всех папку /.idea
 /.idea
+src/prisma/migrations
