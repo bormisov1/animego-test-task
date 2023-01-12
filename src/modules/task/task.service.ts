@@ -1,9 +1,55 @@
 import { Injectable } from '@nestjs/common';
-import { Task } from './task.model';
+import { PrismaService } from '../../prisma/prisma.service';
+import { Task, Status, CreateTaskInput, UpdateTaskInput } from './task.model';
 
 @Injectable()
 export class TaskService {
-  async get(): Promise<Task> {
-    return { name: 'example name to make it return some name' } as Task;
+  constructor(private prisma: PrismaService) {}
+
+  async getById(id: number): Promise<Task> {
+    const task = await this.prisma.task.findUniqueOrThrow({
+      where: {
+        id,
+      },
+    });
+    console.log('getById:', { task });
+    return task as Task;
+  }
+
+  async create(cti: CreateTaskInput): Promise<Task> {
+    const task = await this.prisma.task.create({
+      data: {
+        name: cti.name,
+        description: cti.description,
+        expiresAt: cti.expiresAt,
+        isCompleted: cti.isCompleted || false,
+        status: cti.status || Status.AWAITING,
+        updatedAt: new Date(),
+      },
+    });
+    console.log('task create:', { task });
+    return task as Task;
+  }
+
+  async update(uti: UpdateTaskInput): Promise<Task> {
+    const { id, ...data } = uti;
+    const task = await this.prisma.task.update({
+      where: {
+        id,
+      },
+      data,
+    });
+    console.log('task update:', { task });
+    return task as Task;
+  }
+
+  async delete(id: number): Promise<Task> {
+    const task = await this.prisma.task.delete({
+      where: {
+        id,
+      },
+    });
+    console.log('task delete:', { task });
+    return task as Task;
   }
 }
