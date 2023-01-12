@@ -1,3 +1,6 @@
 node_modules
 # Keep environment variables out of version control
 .env
+# git rm -r --cached .idea - Удалить из кэша
+# иначе будешь выгружать для всех папку /.idea
+/.idea
