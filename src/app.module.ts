@@ -1,21 +1,19 @@
-import { Module } from "@nestjs/common";
-// ?
-// import { GraphQLModule } from "@nestjs/graphql";
-// import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
-
-import { AppController } from "./app.controller";
-import { AppService } from "./app.service";
+import { Module } from '@nestjs/common';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { TaskModule } from './modules/task/task.module';
 
 @Module({
   imports: [
-    // ?
-    // GraphQLModule.forRoot<ApolloDriverConfig>({
-    //   driver: ApolloDriver,
-    //   debug: false,
-    //   playground: false,
-    // }),
+    TaskModule,
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      installSubscriptionHandlers: true,
+      autoSchemaFile: true,
+      debug: true,
+      playground: true,
+    }),
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  providers: [],
 })
 export class AppModule {}
