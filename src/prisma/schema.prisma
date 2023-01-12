@@ -8,12 +8,18 @@ datasource db {
 }
 
 model Task {
-  id          Int    @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   name        String
   description String
-  // expires Int
-  // isCompleted Bool
-  // status
-  // createdAt
-  // updatedAt
+  expiresAt   DateTime
+  isCompleted Boolean  @default(false)
+  status      Status   @default(AWAITING)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+}
+
+enum Status {
+  COMPLETE
+  IN_WORK
+  AWAITING
 }
