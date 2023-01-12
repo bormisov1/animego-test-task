@@ -6,6 +6,16 @@ import {
   registerEnumType,
 } from '@nestjs/graphql';
 
+export enum Status {
+  COMPLETE = 'COMPLETE',
+  IN_WORK = 'IN_WORK',
+  AWAITING = 'AWAITING',
+}
+
+registerEnumType(Status, {
+  name: 'Status',
+});
+
 @ObjectType({ description: 'Task ' })
 export class Task {
   @Field((type) => ID)
@@ -32,13 +42,3 @@ export class Task {
   @Field((type) => GraphQLISODateTime)
   updatedAt: Date;
 }
-
-export enum Status {
-  COMPLETE = 'COMPLETE',
-  IN_WORK = 'IN_WORK',
-  AWAITING = 'AWAITING',
-}
-
-registerEnumType(Status, {
-  name: 'Status',
-});
