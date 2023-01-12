@@ -18,7 +18,7 @@ export class Task {
   description?: string;
 
   @Field((type) => GraphQLISODateTime)
-  expires: Date;
+  expiresAt: Date;
 
   @Field()
   isCompleted: boolean;

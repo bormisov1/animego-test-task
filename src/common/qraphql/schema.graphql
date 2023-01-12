@@ -14,7 +14,7 @@ type Task {
     id:          Int
     name:        String
     description: String
-    expires:     String
+    expiresAt:   String
     isCompleted: Boolean
     status:      Status
     createdAt:   String
@@ -31,14 +31,14 @@ enum Status {
 input CreateTaskInput {
     name:        String
     description: String
-    expires:     String
+    expiresAt:   String
 }
 
 input UpdateTaskInput {
     id:          Int
     name:        String
     description: String
-    expires:     String
+    expiresAt:   String
     isCompleted: Boolean
     status:      Status
 }
