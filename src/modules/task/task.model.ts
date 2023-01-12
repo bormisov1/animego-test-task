@@ -1,18 +1,12 @@
-import { Field, GraphQLISODateTime, ID, ObjectType } from "@nestjs/graphql";
-import Status from "./task.enum";
+import {
+  Field,
+  GraphQLISODateTime,
+  ID,
+  ObjectType,
+  registerEnumType,
+} from '@nestjs/graphql';
 
-/* type Task {
-    id:          Int
-    name:        String
-    description: String
-    expires:     DateTime
-    isCompleted: Boolean
-    status:      Status
-    createdAt:   DateTime
-    updatedAt:   DateTime
-} */
-
-@ObjectType({ description: "Task " })
+@ObjectType({ description: 'Task ' })
 export class Task {
   @Field((type) => ID)
   id: number;
@@ -38,3 +32,13 @@ export class Task {
   @Field((type) => GraphQLISODateTime)
   updatedAt: Date;
 }
+
+export enum Status {
+  COMPLETE = 'COMPLETE',
+  IN_WORK = 'IN_WORK',
+  AWAITING = 'AWAITING',
+}
+
+registerEnumType(Status, {
+  name: 'Status',
+});
