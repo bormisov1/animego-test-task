@@ -6,6 +6,7 @@ FROM base AS dependencies
 WORKDIR /app
 COPY --chown=node:node package.json pnpm-lock.yaml ./
 RUN pnpm install
+
 # RUN pnpm add -D @types/ws
 # RUN pnpm add @nestjs/graphql@9.1.2
 # RUN pnpm add apollo-server-express@3.8.1
@@ -14,11 +15,15 @@ FROM base AS dev_build
 WORKDIR /app
 COPY --chown=node:node . .
 COPY --chown=node:node --from=dependencies /app/node_modules ./node_modules
-# RUN pnpm build
+RUN rm -rf dist/
+
+# RUN pnpm generate
+RUN pnpm build
 RUN pnpm prune --prod
 
 FROM base AS prod_build
 WORKDIR /app
+
 COPY --chown=node:node --from=dev_build /app/dist/ ./dist/
 COPY --chown=node:node --from=dev_build /app/node_modules ./node_modules
 CMD [ "node", "dist/main.js" ]
