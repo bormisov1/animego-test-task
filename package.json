@@ -108,7 +108,7 @@
   "scripts": {
     "start": "node ./dist/app.js",
     "dev": "ts-node-dev -r tsconfig-paths/register --exit-child src/main.ts",
-    "build": "tsc && tsc-alias",
+    "build": "nest build",
     "generate": "src/prisma generate",
     "seed": "ts-node src/prisma/seeds/index.ts",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
