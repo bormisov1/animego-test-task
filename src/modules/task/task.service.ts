@@ -35,7 +35,7 @@ export class TaskService {
     const { id, ...data } = uti;
     const task = await this.prisma.task.update({
       where: {
-        id,
+        id: +id,
       },
       data,
     });
@@ -46,7 +46,7 @@ export class TaskService {
   async delete(id: number): Promise<Task> {
     const task = await this.prisma.task.delete({
       where: {
-        id,
+        id: +id,
       },
     });
     console.log('task delete:', { task });

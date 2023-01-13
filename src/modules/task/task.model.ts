@@ -29,7 +29,7 @@ export class Task {
   description?: string;
 
   @Field((type) => GraphQLISODateTime)
-  expiresAt: Date;
+  expiresAt?: Date;
 
   @Field()
   isCompleted: boolean;
@@ -46,26 +46,20 @@ export class Task {
 
 @InputType()
 export class CreateTaskInput {
-  @Field()
+  @Field({ nullable: true })
   name?: string;
 
-  @Field()
+  @Field({ nullable: true })
   description?: string;
 
-  @Field((type) => GraphQLISODateTime)
-  expiresAt: Date;
+  @Field((type) => GraphQLISODateTime, { nullable: true })
+  expiresAt?: Date;
 
-  @Field()
-  isCompleted: boolean;
+  @Field({ nullable: true })
+  isCompleted?: boolean;
 
-  @Field()
+  @Field((type) => Status, { nullable: true })
   status?: Status;
-
-  @Field((type) => GraphQLISODateTime)
-  createdAt: Date;
-
-  @Field((type) => GraphQLISODateTime)
-  updatedAt: Date;
 }
 
 @InputType()
@@ -73,18 +67,18 @@ export class UpdateTaskInput {
   @Field((type) => ID)
   id: number;
 
-  @Field({ nullable: false })
+  @Field({ nullable: true })
   name?: string;
 
-  @Field()
+  @Field({ nullable: true })
   description?: string;
 
-  @Field((type) => GraphQLISODateTime)
+  @Field((type) => GraphQLISODateTime, { nullable: true })
   expiresAt?: Date;
 
-  @Field()
+  @Field({ nullable: true })
   isCompleted?: boolean;
 
-  @Field()
+  @Field((type) => Status, { nullable: true })
   status?: Status;
 }

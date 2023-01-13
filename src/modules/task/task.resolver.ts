@@ -1,7 +1,7 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { TaskService } from './task.service';
-import { Task } from './models/task';
-import { CreateTaskInput, UpdateTaskInput } from './models/input';
+import { Task } from './task.model';
+import { CreateTaskInput, UpdateTaskInput } from './task.model';
 
 @Resolver(() => Task)
 export class TaskResolver {
@@ -14,7 +14,7 @@ export class TaskResolver {
 
   @Mutation((returns) => Task)
   async createTask(
-    @Args({ name: 'createTaskImport', type: () => CreateTaskInput })
+    @Args({ name: 'createTaskInput', type: () => CreateTaskInput })
     createTaskInput: CreateTaskInput,
   ) {
     return this.taskService.create(createTaskInput);
@@ -22,7 +22,7 @@ export class TaskResolver {
 
   @Mutation((returns) => Task)
   async updateTask(
-    @Args({ name: 'updateTaskImport', type: () => UpdateTaskInput })
+    @Args({ name: 'updateTaskInput', type: () => UpdateTaskInput })
     updateTaskInput: UpdateTaskInput,
   ) {
     return this.taskService.update(updateTaskInput);
