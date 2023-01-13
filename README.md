@@ -1,31 +1,5 @@
 # Animego Test Task
 
-## Docker
-
-#### Run postgres db locally via docker-compose
-
-```bash
-docker-compose up
-```
-
-#### Stop postgres db via docker-compose
-
-```bash
-docker-compose down
-```
-
-#### Stop & Remove postgres db via docker-compose
-
-```bash
-docker-compose down --rmi all -v
-```
-
-#### Build
-
-```bash
-docker build -t animego-test-task .
-```
-
 ## pnpm , npm
 
 #### Installation
@@ -39,3 +13,33 @@ $ pnpm install
 ```bash
 $ npm run dev
 ```
+
+## Docker
+
+#### Run container - PostgreSQL and NestJS locally via docker-compose
+
+```bash
+docker-compose up
+```
+
+#### Stop container - PostgreSQL and NestJS via docker-compose
+
+```bash
+docker-compose down
+```
+
+#### Stop & Remove container - PostgreSQL and NestJS via docker-compose
+
+```bash
+docker-compose down --rmi all -v
+```
+
+#### Build via docker
+
+```bash
+docker build -t nest-pnpm-docker .
+docker run -dp 3000:3000 nest-pnpm-docker
+
+```
+
+<!-- docker build -t animego-test-task . -->
