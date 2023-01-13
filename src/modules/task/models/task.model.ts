@@ -8,7 +8,7 @@ import {
 
 @ObjectType({ description: 'Task ' })
 export class Task {
-  @Field((type) => ID)
+  @Field(() => ID)
   id: number;
 
   @Field({ nullable: false })
@@ -17,19 +17,19 @@ export class Task {
   @Field({ nullable: false })
   description?: string;
 
-  @Field((type) => GraphQLISODateTime)
+  @Field(() => GraphQLISODateTime)
   expiresAt: Date;
 
   @Field()
   isCompleted: boolean;
 
-  @Field((type) => Status)
+  @Field(() => Status)
   status: Status;
 
-  @Field((type) => GraphQLISODateTime)
+  @Field(() => GraphQLISODateTime)
   createdAt: Date;
 
-  @Field((type) => GraphQLISODateTime)
+  @Field(() => GraphQLISODateTime)
   updatedAt: Date;
 }
 

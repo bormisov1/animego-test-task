@@ -11,7 +11,7 @@ model Task {
   id          Int      @id @default(autoincrement())
   name        String
   description String
-  expiresAt   DateTime
+  expiresAt   DateTime @default(now())
   isCompleted Boolean  @default(false)
   status      Status   @default(AWAITING)
   createdAt   DateTime @default(now())

@@ -6,7 +6,7 @@ CREATE TABLE "Task" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "description" TEXT NOT NULL,
-    "expiresAt" TIMESTAMP(3) NOT NULL,
+    "expiresAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "isCompleted" BOOLEAN NOT NULL DEFAULT false,
     "status" "Status" NOT NULL DEFAULT 'AWAITING',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
