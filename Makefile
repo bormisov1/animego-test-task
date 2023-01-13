@@ -1,3 +1,6 @@
+# Заменил этот билд в package.json
+build:
+	tsc && tsc-alias
 # генерирует клиента Prisma на основе схемы (schema.prisma):
 gen:
 	npx prisma generate
