@@ -1,7 +1,6 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { TaskService } from './task.service';
-import { Task } from './task.model';
-import { CreateTaskInput, UpdateTaskInput } from './task.model';
+import { Status, Task, CreateTaskInput, UpdateTaskInput } from './task.model';
 
 @Resolver(() => Task)
 export class TaskResolver {
@@ -13,8 +12,13 @@ export class TaskResolver {
   }
 
   @Query((returns) => [Task])
-  async tasks(): Promise<Task[]> {
-    return await this.taskService.getAll();
+  async tasks(@Args({
+    name: "status",
+    type: () => Status,
+    nullable: true
+  }) status: Status): Promise<Task[]> {
+    if (status === null) return await this.taskService.getAll();
+    return await this.taskService.getByStatus(status);
   }
 
   @Mutation((returns) => Task)

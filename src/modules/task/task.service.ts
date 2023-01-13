@@ -17,8 +17,12 @@ export class TaskService {
         id,
       },
     });
-    console.log('getById:', { task });
     return task as Task;
+  }
+
+  async getByStatus(status: Status): Promise<Task[]> {
+    const tasks = await this.prisma.task.findMany({where: {status}});
+    return tasks as Task[];
   }
 
   async create(cti: CreateTaskInput): Promise<Task> {
@@ -32,7 +36,6 @@ export class TaskService {
         updatedAt: new Date(),
       },
     });
-    console.log('task create:', { task });
     return task as Task;
   }
 
@@ -44,7 +47,6 @@ export class TaskService {
       },
       data,
     });
-    console.log('task update:', { task });
     return task as Task;
   }
 
@@ -54,7 +56,6 @@ export class TaskService {
         id: +id,
       },
     });
-    console.log('task delete:', { task });
     return task as Task;
   }
 }
