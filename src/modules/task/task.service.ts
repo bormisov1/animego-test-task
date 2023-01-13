@@ -6,6 +6,11 @@ import { Task, Status, CreateTaskInput, UpdateTaskInput } from './task.model';
 export class TaskService {
   constructor(private prisma: PrismaService) {}
 
+  async getAll(): Promise<Task[]> {
+    const tasks = await this.prisma.task.findMany({});
+    return tasks as Task[];
+  }
+
   async getById(id: number): Promise<Task> {
     const task = await this.prisma.task.findUniqueOrThrow({
       where: {

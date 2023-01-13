@@ -12,6 +12,11 @@ export class TaskResolver {
     return await this.taskService.getById(id);
   }
 
+  @Query((returns) => [Task])
+  async tasks(): Promise<Task[]> {
+    return await this.taskService.getAll();
+  }
+
   @Mutation((returns) => Task)
   async createTask(
     @Args({ name: 'createTaskInput', type: () => CreateTaskInput })
