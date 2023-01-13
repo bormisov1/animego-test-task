@@ -5,9 +5,9 @@ import { PrismaService } from '../../prisma/prisma.service';
 @Injectable()
 export class TaskService {
   constructor(private prisma: PrismaService) {}
+
   async getAll(): Promise<Task[]> {
     const tasks = await this.prisma.task.findMany({});
-    console.log('getAllTasks:', tasks);
     return tasks as Task[];
   }
 }
