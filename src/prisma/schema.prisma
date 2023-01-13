@@ -9,9 +9,9 @@ datasource db {
 
 model Task {
   id          Int      @id @default(autoincrement())
-  name        String
-  description String
-  expiresAt   DateTime
+  name        String?
+  description String?
+  expiresAt   DateTime?
   isCompleted Boolean  @default(false)
   status      Status   @default(AWAITING)
   createdAt   DateTime @default(now())
