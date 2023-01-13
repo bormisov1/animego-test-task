@@ -1,5 +1,14 @@
 version: '3.8'
 services:
+  nest-app:
+    image: nest-image
+    container_name: nest-container
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: prod_build
+    ports:
+      - ${NEST_CONTAINER_PORT}:3000
   pg-db:
     image: postgres:14.5-alpine
     container_name: postgres_anime_container
