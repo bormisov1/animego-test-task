@@ -21,7 +21,7 @@ export class TaskService {
   }
 
   async getByStatus(status: Status): Promise<Task[]> {
-    const tasks = await this.prisma.task.findMany({where: {status}});
+    const tasks = await this.prisma.task.findMany({ where: { status } });
     return tasks as Task[];
   }
 

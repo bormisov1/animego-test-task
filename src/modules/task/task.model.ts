@@ -23,10 +23,10 @@ export class Task {
   id: number;
 
   @Field({ nullable: false })
-  name?: string;
+  name: string;
 
   @Field({ nullable: false })
-  description?: string;
+  description: string;
 
   @Field((type) => GraphQLISODateTime)
   expiresAt?: Date;
@@ -47,13 +47,13 @@ export class Task {
 @InputType()
 export class CreateTaskInput {
   @Field({ nullable: true })
-  name?: string;
+  name: string;
 
   @Field({ nullable: true })
-  description?: string;
+  description: string;
 
   @Field((type) => GraphQLISODateTime, { nullable: true })
-  expiresAt?: Date;
+  expiresAt: Date;
 
   @Field({ nullable: true })
   isCompleted?: boolean;

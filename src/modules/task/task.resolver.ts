@@ -12,12 +12,19 @@ export class TaskResolver {
   }
 
   @Query((returns) => [Task])
-  async tasks(@Args({
-    name: "status",
-    type: () => Status,
-    nullable: true
-  }) status: Status): Promise<Task[]> {
-    if (status === null) return await this.taskService.getAll();
+  async tasks(
+    @Args({
+      name: 'status',
+      type: () => Status,
+      nullable: true,
+    })
+    status: Status,
+  ): Promise<Task[]> {
+    if (status === null) {
+      console.log('tasks');
+      return await this.taskService.getAll();
+    }
+
     return await this.taskService.getByStatus(status);
   }
 
@@ -29,6 +36,7 @@ export class TaskResolver {
     return this.taskService.create(createTaskInput);
   }
 
+  
   @Mutation((returns) => Task)
   async updateTask(
     @Args({ name: 'updateTaskInput', type: () => UpdateTaskInput })
