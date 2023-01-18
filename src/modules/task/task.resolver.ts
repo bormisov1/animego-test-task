@@ -1,39 +1,42 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import {ExecutionContext,Inject } from '@nestjs/common';
+import { Args, Mutation, Query, Resolver, Context } from '@nestjs/graphql';
 import { TaskService } from './task.service';
 import { Status, Task, CreateTaskInput, UpdateTaskInput } from './task.model';
 import Redis from 'ioredis';
-import { CONTEXT } from '@nestjs/graphql';
+import { Request } from 'express';
+
 /*  */
 
 @Resolver(() => Task)
 export class TaskResolver {
   private redis = Redis.createClient();
-  constructor(private readonly taskService: TaskService,
-    @Inject(CONTEXT) private readonly ctx: ExecutionContext
-    ){}
+  constructor(private readonly taskService: TaskService) {}
 
-
-
-  getIp(){
-    const request = this.ctx.switchToHttp().getRequest();
-    const ip = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
-  return ip
-  }
-
-  async requestAsCache() {
+  async requestAsCache(key: string, cb: any) {
     try {
-      const key = this.getIp()
-      const getResponse = await this.redis.get(key);
-      if(getResponse) {
-        return JSON.parse(getResponse);
-      } else {
-        const setnxResponse = await this.redis.setnx(key, 5);
-        if (setnxResponse) {
-          await this.redis.expire(key, 3000 / 1000);
+      const valueFiled = key + '_filed';
+      const valueCounter = key + '_counter';
+
+      const currentValue = (await this.redis.get(valueCounter)) || null;
+      if (!currentValue) {
+        await this.redis.set(valueCounter, 5);
+        await this.redis.expire(valueCounter, 300);
+      }
+
+      if (currentValue || 0 > 0) {
+        const value = await this.redis.get(valueFiled);
+        if (value) {
+          console.log('using cache data');
+          await this.redis.decrby(valueCounter, 1);
+          return JSON.parse(value);
         } else {
-          await this.redis.decrby(key, 1);
+          // Get the updated data and set it to valueFiled key
+          const updatedData = cb;
+          await this.redis.set(valueFiled, JSON.stringify(updatedData));
+          await this.redis.expire(valueFiled, 300);
+          await this.redis.decrby(valueCounter, 1);
+          return updatedData;
         }
+      } else {
         return false;
       }
     } catch (err) {
@@ -41,10 +44,22 @@ export class TaskResolver {
     }
   }
 
-
   @Query((returns) => Task)
-  async task(@Args('id') id: number): Promise<Task> {
-    return await this.taskService.getById(id);
+  async task(
+    @Args('id') id: number,
+    @Context() context: { req: Request },
+  ): Promise<Task> {
+    const type = context.req.body.query.match(/query\s+(\w+)/)[1];
+    const request = context.req;
+    const cacheData = await this.requestAsCache(
+      `${request.ip}_${type}`,
+      await this.taskService.getById(id),
+    );
+    if (cacheData) {
+      return cacheData;
+    } else {
+      return await this.taskService.getById(id);
+    }
   }
 
   @Query((returns) => [Task])
@@ -55,20 +70,25 @@ export class TaskResolver {
       nullable: true,
     })
     status: Status,
-  ): Promise<Task[]>{
-    const cacheData = await this.requestAsCache();
+    @Context() context: { req: Request },
+  ): Promise<Task[]> {
+    const type = context.req.body.query.match(/query\s+(\w+)/)[1];
+    const request = context.req;
+    const cacheData = await this.requestAsCache(
+      `${request.ip}_${type}`,
+      !status
+        ? await this.taskService.getAll()
+        : await this.taskService.getByStatus(status),
+    );
     if (cacheData) {
-      return {...cacheData, cache:true};
+      return cacheData;
     } else {
-      const queryResult = await this.taskService.getAll()
-      const ip = this.getIp()
-      this.redis.set(ip, JSON.stringify(queryResult), 'EX', 3000);
+      const queryResult = !status
+        ? await this.taskService.getAll()
+        : await this.taskService.getByStatus(status);
       return queryResult;
-    } }
-  
-    /*
-    const queryResult = await this.taskService.getAll()
-     const data = await this.taskService.getByStatus(status); */
+    }
+  }
 
   @Mutation((returns) => Task)
   async createTask(

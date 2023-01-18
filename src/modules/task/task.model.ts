@@ -19,52 +19,52 @@ registerEnumType(Status, {
 
 @ObjectType({ description: 'Task ' })
 export class Task {
-  @Field((type) => ID)
+  @Field(() => ID)
   id: number;
 
   @Field({ nullable: false })
-  name: string;
+  name?: string;
 
   @Field({ nullable: false })
-  description: string;
+  description?: string;
 
-  @Field((type) => GraphQLISODateTime)
+  @Field(() => GraphQLISODateTime)
   expiresAt?: Date;
 
   @Field()
   isCompleted: boolean;
 
-  @Field((type) => Status)
+  @Field(() => Status)
   status: Status;
 
-  @Field((type) => GraphQLISODateTime)
+  @Field(() => GraphQLISODateTime)
   createdAt: Date;
 
-  @Field((type) => GraphQLISODateTime)
+  @Field(() => GraphQLISODateTime)
   updatedAt: Date;
 }
 
 @InputType()
 export class CreateTaskInput {
   @Field({ nullable: true })
-  name: string;
+  name?: string;
 
   @Field({ nullable: true })
-  description: string;
+  description?: string;
 
-  @Field((type) => GraphQLISODateTime, { nullable: true })
-  expiresAt: Date;
+  @Field(() => GraphQLISODateTime, { nullable: true })
+  expiresAt?: Date;
 
   @Field({ nullable: true })
   isCompleted?: boolean;
 
-  @Field((type) => Status, { nullable: true })
+  @Field(() => Status, { nullable: true })
   status?: Status;
 }
 
 @InputType()
 export class UpdateTaskInput {
-  @Field((type) => ID)
+  @Field(() => ID)
   id: number;
 
   @Field({ nullable: true })
@@ -73,12 +73,12 @@ export class UpdateTaskInput {
   @Field({ nullable: true })
   description?: string;
 
-  @Field((type) => GraphQLISODateTime, { nullable: true })
+  @Field(() => GraphQLISODateTime, { nullable: true })
   expiresAt?: Date;
 
   @Field({ nullable: true })
   isCompleted?: boolean;
 
-  @Field((type) => Status, { nullable: true })
+  @Field(() => Status, { nullable: true })
   status?: Status;
 }
