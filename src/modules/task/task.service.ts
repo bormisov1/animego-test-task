@@ -4,7 +4,7 @@ import { Task, Status, CreateTaskInput, UpdateTaskInput } from './task.model';
 
 @Injectable()
 export class TaskService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async getAll(): Promise<Task[]> {
     const tasks = await this.prisma.task.findMany({});
@@ -21,7 +21,7 @@ export class TaskService {
   }
 
   async getByStatus(status: Status): Promise<Task[]> {
-    const tasks = await this.prisma.task.findMany({where: {status}});
+    const tasks = await this.prisma.task.findMany({ where: { status } });
     return tasks as Task[];
   }
 
